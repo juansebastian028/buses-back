@@ -1,32 +1,40 @@
 const Role = require("../models/role");
-const { Usuario } = require("../models");
+const { User, BusRoute } = require("../models");
 
-const esRoleValido = async (rol = "") => {
-	const existeRol = await Role.findOne({ rol });
-	if (!existeRol) {
+const isRoleValid = async (rol = "") => {
+	const existRol = await Role.findOne({ rol });
+	if (!existRol) {
 		throw new Error(`El rol ${rol} no está registrado en la BD`);
 	}
 };
 
-const emailExiste = async (correo = "") => {
-	// Verificar si el correo existe
-	const existeEmail = await Usuario.findOne({ correo });
-	if (existeEmail) {
-		throw new Error(`El correo: ${correo}, ya está registrado`);
+const emailExist = async (email = "") => {
+	// Verificar si el email exist
+	const existEmail = await User.findOne({ email });
+	if (existEmail) {
+		throw new Error(`El email: ${email}, ya está registrado`);
 	}
 };
 
-const existeUsuarioPorId = async (id) => {
-	// Verificar si el correo existe
-	const existeUsuario = await Usuario.findById(id);
-	if (!existeUsuario) {
-		throw new Error(`El id no existe ${id}`);
+const existUserById = async (id) => {
+	// Verificar si el email exist
+	const existUser = await User.findById(id);
+	if (!existUser) {
+		throw new Error(`El id no exist ${id}`);
+	}
+};
+
+const existBusRouteById = async (id) => {
+	// Verificar si el email exist
+	const existBusRoute = await BusRoute.findById(id);
+	if (!existBusRoute) {
+		throw new Error(`El id no exist ${id}`);
 	}
 };
 /**
  * Validar colecciones permitidas
  */
-const coleccionesPermitidas = (coleccion = "", colecciones = []) => {
+const allowedConnections = (coleccion = "", colecciones = []) => {
 	const incluida = colecciones.includes(coleccion);
 	if (!incluida) {
 		throw new Error(
@@ -37,8 +45,9 @@ const coleccionesPermitidas = (coleccion = "", colecciones = []) => {
 };
 
 module.exports = {
-	esRoleValido,
-	emailExiste,
-	existeUsuarioPorId,
-	coleccionesPermitidas,
+	isRoleValid,
+	emailExist,
+	existUserById,
+	existBusRouteById,
+	allowedConnections,
 };
