@@ -20,7 +20,6 @@ const usersGet = async (req = request, res = response) => {
 
 const usersPost = async (req, res = response) => {
 	const { name, email, password, rol } = req.body;
-	console.log( name, email, password, rol)
 	const user = new User({ name, email, password, rol });
 
 	// Encriptar la contraseña

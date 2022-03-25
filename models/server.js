@@ -1,55 +1,66 @@
 const express = require("express");
 const cors = require("cors");
+const { createServer } = require("http");
 
 const { dbConnection } = require("../database/config");
+const { socketController } = require("../sockets/controller");
 
 class Server {
-	constructor() {
-		this.app = express();
-		this.port = process.env.PORT;
+  constructor() {
+    this.app = express();
+    this.port = process.env.PORT;
+    this.server = createServer(this.app);
+    this.io = require("socket.io")(this.server);
 
-		this.paths = {
-			auth: "/api/auth",
-			users: "/api/users",
-			busRoutes: "/api/bus-routes",
-		};
+    this.paths = {
+      auth: "/api/auth",
+      users: "/api/users",
+      busRoutes: "/api/bus-routes",
+    };
 
-		// Conectar a base de datos
-		this.conectarDB();
+    // Conectar a base de datos
+    this.conectarDB();
 
-		// Middlewares
-		this.middlewares();
+    // Middlewares
+    this.middlewares();
 
-		// Rutas de mi aplicación
-		this.routes();
-	}
+    // Rutas de mi aplicación
+    this.routes();
 
-	async conectarDB() {
-		await dbConnection();
-	}
+    // Sockets
+    this.sockets();
+  }
 
-	middlewares() {
-		// CORS
-		this.app.use(cors());
+  async conectarDB() {
+    await dbConnection();
+  }
 
-		// Lectura y parseo del body
-		this.app.use(express.json());
+  middlewares() {
+    // CORS
+    this.app.use(cors());
 
-		// Directorio Público
-		this.app.use(express.static("public"));
-	}
+    // Lectura y parseo del body
+    this.app.use(express.json());
 
-	routes() {
-		this.app.use(this.paths.auth, require("../routes/auth"));
-		this.app.use(this.paths.users, require("../routes/users"));
-		this.app.use(this.paths.busRoutes, require("../routes/busRoute"));
-	}
+    // Directorio Público
+    this.app.use(express.static("public"));
+  }
 
-	listen() {
-		this.app.listen(this.port, () => {
-			console.log("Servidor corriendo en puerto", this.port);
-		});
-	}
+  routes() {
+    this.app.use(this.paths.auth, require("../routes/auth"));
+    this.app.use(this.paths.users, require("../routes/users"));
+    this.app.use(this.paths.busRoutes, require("../routes/busRoute"));
+  }
+
+  sockets() {
+    this.io.on("connection", (socket) => socketController(socket, this.io));
+  }
+
+  listen() {
+    this.server.listen(this.port, () => {
+      console.log("Servidor corriendo en puerto", this.port);
+    });
+  }
 }
 
 module.exports = Server;
