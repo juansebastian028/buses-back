@@ -16,7 +16,7 @@ const {
 	busRouteGet,
 	busRoutePost,
 	busRouteDelete,
-} = require("../controllers/busRoute");
+} = require("../controllers/busRoute"); 
 
 const router = Router();
 
