@@ -46,10 +46,10 @@ const login = async (req, res = response) => {
 };
 
 const googleSignin = async (req, res = response) => {
-	const { id_token } = req.body;
+	const { tokenId } = req.body;
 
 	try {
-		const { email, name, img } = await googleVerify(id_token);
+		const { email, name, img } = await googleVerify(tokenId);
 		let user = await User.findOne({ email });
 
 		if (!user) {
@@ -57,7 +57,7 @@ const googleSignin = async (req, res = response) => {
 			const data = {
 				name,
 				email,
-				password: ":P",
+				password: "",
 				img,
 				google: true,
 			};
