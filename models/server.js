@@ -16,6 +16,7 @@ class Server {
       auth: "/api/auth",
       users: "/api/users",
       busRoutes: "/api/bus-routes",
+      roles: "/api/roles",
     };
 
     // Conectar a base de datos
@@ -50,6 +51,7 @@ class Server {
     this.app.use(this.paths.auth, require("../routes/auth"));
     this.app.use(this.paths.users, require("../routes/users"));
     this.app.use(this.paths.busRoutes, require("../routes/busRoute"));
+    this.app.use(this.paths.roles, require("../routes/role"));
   }
 
   sockets() {
