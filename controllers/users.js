@@ -4,12 +4,12 @@ const bcryptjs = require("bcryptjs");
 const User = require("../models/user");
 
 const usersGet = async (req = request, res = response) => {
-	const { limite = 5, desde = 0 } = req.query;
+	// const { limite = 5, desde = 0 } = req.query;
 	const query = { estado: true };
 
 	const [total, users] = await Promise.all([
 		User.countDocuments(query),
-		User.find(query).skip(Number(desde)).limit(Number(limite)),
+		User.find(query)//.skip(Number(desde)).limit(Number(limite)),
 	]);
 
 	res.json({
@@ -29,9 +29,7 @@ const usersPost = async (req, res = response) => {
 	// Guardar en BD
 	await user.save();
 
-	res.json({
-		user,
-	});
+	res.json(user);
 };
 
 const usersPut = async (req, res = response) => {
@@ -44,7 +42,7 @@ const usersPut = async (req, res = response) => {
 		resto.password = bcryptjs.hashSync(password, salt);
 	}
 
-	const user = await User.findByIdAndUpdate(id, resto);
+	const user = await User.findByIdAndUpdate(id, resto, {new: true});
 
 	res.json(user);
 };
@@ -57,7 +55,7 @@ const usersPatch = (req, res = response) => {
 
 const usersDelete = async (req, res = response) => {
 	const { id } = req.params;
-	const user = await User.findByIdAndUpdate(id, { estado: false });
+	const user = await User.findByIdAndUpdate(id, { estado: false }, {new: true});
 
 	res.json(user);
 };

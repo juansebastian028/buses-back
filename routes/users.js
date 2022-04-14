@@ -4,7 +4,7 @@ const { check } = require("express-validator");
 const {
 	validateFields,
 	validateJWT,
-	// isAdminRole,
+	isAdminRole,
 	hasRole,
 } = require("../middlewares");
 
@@ -57,7 +57,7 @@ router.delete(
 	"/:id",
 	[
 		validateJWT,
-		// isAdminRole,
+		isAdminRole,
 		hasRole("ADMIN_ROLE"),
 		check("id", "No es un ID válido").isMongoId(),
 		check("id").custom(existUserById),
