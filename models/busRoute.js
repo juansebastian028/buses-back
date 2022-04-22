@@ -10,9 +10,15 @@ const BusRouteSchema = Schema({
 		outward: [],
 		return: []
 	},
+	coords: {
+		type: Object,
+		outward: [],
+		return: []
+	},
 	state: {
-		type: Boolean
-	}
+		type: Boolean,
+		default: true,
+	},
 });
 
 BusRouteSchema.methods.toJSON = function () {

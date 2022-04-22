@@ -26,7 +26,7 @@ router.post(
 	"/",
 	[
 		check("number", "El número de la ruta es obligatorio").not().isEmpty(),
-		check("rol").custom(isRoleValid),
+		// check("rol").custom(isRoleValid),
 		validateFields,
 	],
 	busRoutePost
