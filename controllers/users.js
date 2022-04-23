@@ -47,12 +47,6 @@ const usersPut = async (req, res = response) => {
 	res.json(user);
 };
 
-const usersPatch = (req, res = response) => {
-	res.json({
-		msg: "patch API - usersPatch",
-	});
-};
-
 const usersDelete = async (req, res = response) => {
 	const { id } = req.params;
 	const user = await User.findByIdAndUpdate(id, { estado: false }, {new: true});
@@ -60,10 +54,19 @@ const usersDelete = async (req, res = response) => {
 	res.json(user);
 };
 
+const addBusRouteToFavourites =  async (req, res = response) => {
+	const { id } = req.params;
+	console.log(req.body);
+	const { busRouteId } = req.body;
+	console.log(id, busRouteId);
+	const user = await User.findByIdAndUpdate(id, { $push: { favouritesBusRoutes: busRouteId } }, {new: true} );
+	res.json(user);
+};
+
 module.exports = {
 	usersGet,
 	usersPost,
 	usersPut,
-	usersPatch,
 	usersDelete,
+	addBusRouteToFavourites
 };
