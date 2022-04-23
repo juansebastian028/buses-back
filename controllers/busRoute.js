@@ -15,9 +15,7 @@ const busRoutePost = async (req, res = response) => {
 	const { number, journeys, coords } = req.body;
 	const busRoute = new BusRoute({ number, journeys, coords });
 	await busRoute.save();
-	res.json({
-		busRoute,
-	});
+	res.json(busRoute);
 };
 
 const busRouteDelete = async (req, res = response) => {
