@@ -56,11 +56,18 @@ const usersDelete = async (req, res = response) => {
 
 const addBusRouteToFavourites =  async (req, res = response) => {
 	const { id } = req.params;
-	console.log(req.body);
 	const { busRouteId } = req.body;
 	console.log(id, busRouteId);
-	const user = await User.findByIdAndUpdate(id, { $push: { favouritesBusRoutes: busRouteId } }, {new: true} );
-	res.json(user);
+	const user = await User.findByIdAndUpdate(id, { $push: { favouritesBusRoutes: busRouteId } }, {new: true} ).populate('favouritesBusRoutes');
+	res.json( user );
+};
+
+const removeBusRouteFromFavourites =  async (req, res = response) => {
+	const { id } = req.params;
+	const { busRouteId } = req.body;
+	console.log(id, busRouteId);
+	const user = await User.findByIdAndUpdate(id, { $pull: { favouritesBusRoutes: busRouteId } }, {new: true} ).populate('favouritesBusRoutes');
+	res.json( user );
 };
 
 module.exports = {
@@ -68,5 +75,6 @@ module.exports = {
 	usersPost,
 	usersPut,
 	usersDelete,
-	addBusRouteToFavourites
+	addBusRouteToFavourites,
+	removeBusRouteFromFavourites
 };

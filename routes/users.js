@@ -19,7 +19,8 @@ const {
 	usersPut,
 	usersPost,
 	usersDelete,
-	addBusRouteToFavourites
+	addBusRouteToFavourites,
+	removeBusRouteFromFavourites
 } = require("../controllers/users");
 
 const router = Router();
@@ -75,6 +76,17 @@ router.post(
 		validateFields,
 	],
 	addBusRouteToFavourites
+);
+
+router.put(
+	"/:id/busRoute",
+	[
+		// validateJWT,
+		check("id", "No es un ID válido").isMongoId(),
+		check("id").custom(existUserById),
+		validateFields,
+	],
+	removeBusRouteFromFavourites
 );
 
 module.exports = router;

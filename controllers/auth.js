@@ -11,7 +11,7 @@ const login = async (req, res = response) => {
 
 	try {
 		// Verificar si el email existe
-		const user = await User.findOne({ email });
+		const user = await User.findOne({ email }).populate('favouritesBusRoutes');
 		if (!user) {
 			return res.status(400).json({
 				msg: "User / Password no son correctos - email",
