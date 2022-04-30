@@ -25,8 +25,21 @@ const busRouteDelete = async (req, res = response) => {
 	res.json(busRoute);
 };
 
+const addComment =  async (req, res = response) => {
+	const { id } = req.params;
+	const { comment } = req.body;
+	const busRoute = await BusRoute.findByIdAndUpdate(id, { $push: { comments: comment } }, {new: true} ).populate({
+        path: 'comments',
+        populate: {
+            path: 'user',
+        }
+    });
+	res.json( busRoute );
+};
+
 module.exports = {
 	busRouteGet,
 	busRoutePost,
 	busRouteDelete,
+	addComment
 };

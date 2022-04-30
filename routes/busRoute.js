@@ -16,6 +16,7 @@ const {
 	busRouteGet,
 	busRoutePost,
 	busRouteDelete,
+	addComment,
 } = require("../controllers/busRoute"); 
 
 const router = Router();
@@ -41,6 +42,16 @@ router.delete(
 		validateFields,
 	],
 	busRouteDelete
+);
+
+router.put(
+	"/:id/comments",
+	[
+		check("id", "No es un ID válido").isMongoId(),
+		check("id").custom(existBusRouteById),
+		validateFields,
+	],
+	addComment
 );
 
 module.exports = router;
