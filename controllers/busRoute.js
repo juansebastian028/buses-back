@@ -4,7 +4,12 @@ const BusRoute = require("../models/busRoute");
 
 const busRouteGet = async (req = request, res = response) => {
 	const query = { state: true };
-	const busRoutes = await BusRoute.find(query);
+	const busRoutes = await BusRoute.find(query).populate({
+        path: 'comments',
+        populate: {
+            path: 'user',
+        }
+    });
 
 	res.json({
 		busRoutes,
