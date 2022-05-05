@@ -15,12 +15,25 @@ const {
 const {
 	busRouteGet,
 	busRoutePost,
+	busRoutePut,
 	busRouteDelete,
 } = require("../controllers/busRoute"); 
 
 const router = Router();
 
 router.get("/", busRouteGet);
+
+router.put(
+	"/:id",
+	[
+		check("id", "No es un ID válido").isMongoId(),
+		// check("id").custom(existUserById),
+		// check("rol").custom(isRoleValid),
+		validateFields,
+	],
+	busRoutePut
+);
+
 
 router.post(
 	"/",
