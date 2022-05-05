@@ -21,7 +21,7 @@ const UserSchema = Schema({
 		type: String,
 		required: true,
 		default: "USER_ROLE",
-		emun: ["ADMIN_ROLE", "USER_ROLE"],
+		emun: ["ADMIN_ROLE", "USER_ROLE", "COORDINATOR_ROLE"],
 	},
 	estado: {
 		type: Boolean,
@@ -33,7 +33,7 @@ const UserSchema = Schema({
 	},
 	favouritesBusRoutes: [{
         type: Schema.Types.ObjectId, ref: 'BusRoute'
-    }],
+    }]
 });
 
 UserSchema.methods.toJSON = function () {

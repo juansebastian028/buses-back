@@ -14,14 +14,17 @@ const {
 
 const {
 	busRouteGet,
+	getBusRouteById,
 	busRoutePost,
 	busRoutePut,
 	busRouteDelete,
+	addComment,
 } = require("../controllers/busRoute"); 
 
 const router = Router();
 
 router.get("/", busRouteGet);
+router.get("/:id", getBusRouteById);
 
 router.put(
 	"/:id",
@@ -54,6 +57,16 @@ router.delete(
 		validateFields,
 	],
 	busRouteDelete
+);
+
+router.put(
+	"/:id/comments",
+	[
+		check("id", "No es un ID válido").isMongoId(),
+		check("id").custom(existBusRouteById),
+		validateFields,
+	],
+	addComment
 );
 
 module.exports = router;
