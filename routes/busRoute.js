@@ -14,6 +14,7 @@ const {
 
 const {
 	busRouteGet,
+	getBusRouteById,
 	busRoutePost,
 	busRouteDelete,
 	addComment,
@@ -22,6 +23,7 @@ const {
 const router = Router();
 
 router.get("/", busRouteGet);
+router.get("/:id", getBusRouteById);
 
 router.post(
 	"/",

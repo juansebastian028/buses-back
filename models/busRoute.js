@@ -24,6 +24,7 @@ const BusRouteSchema = Schema({
       user: { type: Schema.Types.ObjectId, ref: "User" },
       value: String,
       date: Date,
+      rating: Number,
     },
   ],
 });

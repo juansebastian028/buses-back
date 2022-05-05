@@ -16,6 +16,29 @@ const busRouteGet = async (req = request, res = response) => {
 	});
 };
 
+const getBusRouteById = async (req, res = response) => {
+	const { id } = req.params;
+	try {		
+		const busRoute = await BusRoute.findById(id).populate({
+			path: 'comments',
+			populate: {
+				path: 'user',
+			}
+		});
+		res.json({
+			success: true,
+			busRoute
+		});
+	} catch (error) {
+		res.status(400).json({
+			success: false,
+			msg: 'Error al buscar la ruta'
+		})
+	}
+
+
+};
+
 const busRoutePost = async (req, res = response) => {
 	const { number, journeys, coords } = req.body;
 	const busRoute = new BusRoute({ number, journeys, coords });
@@ -44,6 +67,7 @@ const addComment =  async (req, res = response) => {
 
 module.exports = {
 	busRouteGet,
+	getBusRouteById,
 	busRoutePost,
 	busRouteDelete,
 	addComment
