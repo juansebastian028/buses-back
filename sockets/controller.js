@@ -11,7 +11,7 @@ const socketController = async( socket = new Socket(), io ) => {
                 } else {
                     socket.emit('position', {coords});
                 }
-            }, 2500)
+            }, 3500)
         })
     })
 }
