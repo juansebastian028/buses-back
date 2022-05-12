@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const fileUpload = require('express-fileupload');
 const { createServer } = require("http");
-
 const { dbConnection } = require("../database/config");
 const { socketController } = require("../sockets/controller");
 
@@ -10,13 +10,15 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
     this.server = createServer(this.app);
-    this.io = require("socket.io")(this.server, { cors: { origin: '*'} } );
+    this.io = require("socket.io")(this.server, { cors: { origin: "*" } });
 
     this.paths = {
       auth: "/api/auth",
       users: "/api/users",
       busRoutes: "/api/bus-routes",
       roles: "/api/roles",
+      posts: "/api/posts",
+      uploads: "/api/uploads",
     };
 
     // Conectar a base de datos
@@ -45,6 +47,15 @@ class Server {
 
     // Directorio Público
     this.app.use(express.static("public"));
+
+    // Fileupload - Carga de archivos
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/tmp/",
+        createParentPath: true,
+      })
+    );
   }
 
   routes() {
@@ -52,6 +63,8 @@ class Server {
     this.app.use(this.paths.users, require("../routes/users"));
     this.app.use(this.paths.busRoutes, require("../routes/busRoute"));
     this.app.use(this.paths.roles, require("../routes/role"));
+    this.app.use(this.paths.posts, require("../routes/posts"));
+    this.app.use(this.paths.uploads, require("../routes/uploads"));
   }
 
   sockets() {

@@ -1,5 +1,5 @@
 const Role = require("../models/role");
-const { User, BusRoute } = require("../models");
+const { User, BusRoute, Post } = require("../models");
 
 const isRoleValid = async (rol = "") => {
 	const existRol = await Role.findOne({ rol });
@@ -31,6 +31,13 @@ const existBusRouteById = async (id) => {
 		throw new Error(`El id no exist ${id}`);
 	}
 };
+const existPostById = async (id) => {
+	// Verificar si el email exist
+	const existPost = await Post.findById(id);
+	if (!existPost) {
+		throw new Error(`El id no exist ${id}`);
+	}
+};
 /**
  * Validar colecciones permitidas
  */
@@ -49,5 +56,6 @@ module.exports = {
 	emailExist,
 	existUserById,
 	existBusRouteById,
+	existPostById,
 	allowedConnections,
 };
