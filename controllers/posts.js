@@ -61,13 +61,17 @@ const createPost = async (req, res = response) => {
 	const { title, desc, date, user, img } = req.body;
 	
 	try {
+		
 		const post = new Post({ title, desc, date, user, img });
 		await post.save();
+		const postPopulated = await Post.findById(post._id).populate('user');
+		
 		res.status(201).json({
 			success: true,
-			post
-		}).populate('user');
+			post: postPopulated
+		})
 	} catch (err) {
+		console.log(err);
 		res.status(400).json({
 			msg: 'Error al guardar la publicación',
 			err
